@@ -1,16 +1,16 @@
-package mylab.order.di.xml;
+package mylab.student.di.xml;
 
-public class Product {
+public class Student {
     private String id;
     private String name;
-    private double price;
+    private int score;
     
-    public Product() {}
+    public Student() {}
     
-    public Product(String id, String name, double price) {
+    public Student(String id, String name, int score) {
         this.id = id;
         this.name = name;
-        this.price = price;
+        this.score = score;
     }
     
     // Getters and Setters
@@ -20,11 +20,11 @@ public class Product {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public int getScore() { return score; }
+    public void setScore(int score) { this.score = score; }
     
     @Override
     public String toString() {
-        return "Product [id=" + id + ", name=" + name + ", price=" + price + "]";
+        return "Student [id=" + id + ", name=" + name + ", score=" + score + "]";
     }
 }

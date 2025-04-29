@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import javax.annotation.Resource;
 
-//SpromgExtension 클래스는 ApplicationContext(컨테이너) 객체를 생성하는 역할을 함
+//SpringExtension 클래스는 ApplicationContext(컨테이너)객체를 생성하는 역할을 함
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "classpath:hello-di.xml")
 public class HelloSpringTest {
@@ -37,7 +37,7 @@ public class HelloSpringTest {
 		System.out.println(strPrinter.getClass().getName());
 		
 		assertEquals("Hello 스프링", printer.toString());
+	
 		assertEquals("Hello 스프링", helloBean.sayHello());
 	}
-	
 }
