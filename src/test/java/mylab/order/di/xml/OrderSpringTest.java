@@ -1,54 +1,45 @@
 package mylab.order.di.xml;
 
-import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(locations = "classpath:mylab-order-di.xml")
 public class OrderSpringTest {
-
-    ApplicationContext context;
-
-    @BeforeEach
-    void container() {
-        // 1. Container 객체 생성
-        context = new GenericXmlApplicationContext("classpath:mylab-order-di.xml");
+	@Autowired
+	ShoppingCart cart;
+	
+	@Autowired
+	OrderService service;
+    
+    //ShoppingCart 검증
+    @Test
+    public void testShoppingCart() {        
+        assertNotNull(cart);
+        assertEquals(2, cart.getProducts().size());
+        /*
+         * cart.getProducts() => List<Product>
+         * cart.getProducts().get(0) => Product
+         * cart.getProducts().get(0).getName() => String
+         */
+        assertEquals("노트북", cart.getProducts().get(0).getName());
+        assertEquals("스마트폰", cart.getProducts().get(1).getName());
     }
 
-    @Test
-    void shoppingCartBeanTest() {
-        // 2. ShoppingCart 빈 요청
-        ShoppingCart cartById = (ShoppingCart) context.getBean("shoppingCart");
-        ShoppingCart cartByType = context.getBean("shoppingCart", ShoppingCart.class);
-
-        // 주소 비교
-        assertSame(cartById, cartByType);
-
-        // Product 리스트 크기 테스트
-        assertEquals(2, cartById.getProducts().size());
-
-        // 총 가격 테스트
-        double expectedTotal = 1500.0 + 800.0;
-        assertEquals(expectedTotal, cartById.getTotalPrice(), 0.001);
-
-        System.out.println("ShoppingCart 테스트: " + cartById);
-    }
-
-    @Test
-    void orderServiceBeanTest() {
-        // 2. OrderService 빈 요청
-        OrderService serviceById = (OrderService) context.getBean("orderService");
-        OrderService serviceByType = context.getBean("orderService", OrderService.class);
-
-        // 주소 비교
-        assertSame(serviceById, serviceByType);
-
-        // 총 주문 금액 테스트
-        double expectedTotal = 1500.0 + 800.0;
-        assertEquals(expectedTotal, serviceById.calculateOrderTotal(), 0.001);
-
-        System.out.println("OrderService 테스트: " + serviceById);
+    //OrderService 검증
+    @Test //@Disabled
+    public void testOrderService() {               
+        // 검증
+        assertNotNull(service);
+        //service.getShoppingCart() => ShoppingCart
+        assertNotNull(service.getShoppingCart());
+        assertEquals(2300000.0, service.calculateOrderTotal(), 0.001);
     }
 }

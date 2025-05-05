@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 import myspring.user.dao.mapper.UserMapper;
 import myspring.user.vo.UserVO;
 
-//@Repository("userDao")
+@Repository("userDao")
 public class UserDaoImplMapper implements UserDao {
-	//@Autowired
+	@Autowired
 	private UserMapper userMapper;	
 	
 	@Override
@@ -41,7 +41,6 @@ public class UserDaoImplMapper implements UserDao {
 		System.out.println("삭제된 Record with ID = " + id ); 
 	}
 }
-
 
 
 

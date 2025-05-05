@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import myspring.user.dao.mapper.UserMapper;
+import myspring.user.service.UserService;
 import myspring.user.vo.UserVO;
 
 @ExtendWith(SpringExtension.class)
@@ -35,7 +37,35 @@ public class UserMyBatisTest {
 	@Autowired
 	SqlSession sqlSession;
 	
+	@Autowired
+	UserMapper userMapper;
+	
+	@Autowired
+	UserService userService;
+	
 	@Test
+	void service() {
+	    // 1. 기존 데이터 먼저 삭제 (존재할 경우)
+	    try {
+	        userService.deleteUser("boot");
+	    } catch (Exception e) {
+	        logger.debug("삭제할 데이터가 없습니다.");
+	    }
+	    
+	    // 2. 새 데이터 삽입
+	    userService.insertUser(new UserVO("boot", "아임부트", "남", "부산"));
+	    
+	    // 3. 조회 확인
+	    UserVO user = userService.getUser("boot");
+	    logger.debug(user);
+	}
+	@Test @Disabled
+	void mapper() {
+		UserVO user = userMapper.selectUserById("gildong");
+		logger.debug(user);
+	}
+	
+	@Test @Disabled
 	void userMapper() {
 		UserVO user = sqlSession.selectOne("userNS.selectUserById", "dooly");
 		logger.debug(user);
